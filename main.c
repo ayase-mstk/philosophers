@@ -10,27 +10,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "philo.h"
+
+void	*start_routine(t_philo *philo)
+{
+	printf("philo number : %d\n", philo->num);
+	return (NULL);
+}
+
+void	start_threads(char **av)
+{
+	int	i;
+	int	ret;
+	int number_of_philo;
+	pthread_t *thread_id;
+	struct s_philo	*philo;
+
+	i = 0;
+	number_of_philo = atoi(av[1]);
+	thread_id = malloc(sizeof(int) * number_of_philo);
+	philo = malloc(sizeof(t_philo) * (number_of_philo));
+	while (i < number_of_philo)
+	{
+		philo[i]->num = i;
+		philo[i]->time_to_die = atoi(av[2]);
+		philo[i]->time_to_eat = atoi(av[3]);
+		philo[i]->time_to_sleep = atoi(av[4]);
+		ret = pthread_create(&thread_id[i], NULL, (void *)start_routine, philo[i]);
+		if (ret != 0)
+			exit(1);
+		ret = pthread_join(thread_id[i], NULL);
+		if (ret != 0)
+			exit(1);
+		i++;
+	}
+}
 
 int	main(int ac, char **av)
 {
-	int number_of_philosophers;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
-	int number_of_times_each_philosopher_must_eat;
-	pthread_attr_t ()tattr;
-	pthread_t tid;
-	extern void *start_routine(void *arg);
-	void *arg;
-	int	ret;
-	int	status;
-
-	ret = pthread_attr_init(&tattr);
-	ret = pthread_create(&tid, &tattr, start_routine, arg);
-
-	
-
+	if (ac != 5)
+		return (0);
+	start_threads(av);
 	// pthred_mutex_lock(&forks);
 	// pthred_mutex_unlock(&forks);
 	return (0);

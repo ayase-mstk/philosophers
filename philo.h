@@ -17,6 +17,15 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <string.h>
 # include <pthread.h>
+
+typedef struct s_philo
+{
+	int num;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+}	t_philo;
 
 #endif
