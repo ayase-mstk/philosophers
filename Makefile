@@ -1,8 +1,10 @@
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -pthread
 RM = rm -f
-SRC =	main.c
+SRC =	main.c \
+		init.c \
+		routine.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
