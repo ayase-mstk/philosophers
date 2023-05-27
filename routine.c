@@ -1,72 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/27 17:56:05 by hagewahi          #+#    #+#             */
+/*   Updated: 2023/05/27 23:46:13 by hagewahi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void	*philo_routine(t_philo *philo)
+int	check_break(t_env *env)
 {
-	struct timeval tv;
+	int	res;
 
-	// usleep(1000);
-	gettimeofday(&tv, NULL);
-	printf("born as philo%d\n", philo->num);
-	while (philo->time_to_die && philo->num_of_times_each_philo_must_eat)
+	res = 0;
+	pthread_mutex_lock(&env->info->dead_mutex);
+	if (!env->info->someone_died)
+		res = 1;
+	pthread_mutex_unlock(&env->info->dead_mutex);
+	pthread_mutex_lock(&env->info->meal_mutex);
+	if (!env->info->everyone_ate_meal)
+		res = 1;
+	pthread_mutex_unlock(&env->info->meal_mutex);
+	return (res);
+}
+
+void	*philo_routine(t_env *env)
+{
+	printf("born as philo%d\n", env->philo->num);
+	reset_borntime(env->philo);
+	// create_watchman(env->philo);
+	while (1)
 	{
-		if (philo->num % 2 == 0)
+		if (env->philo->num % 2 == 0)
 			usleep(50);
-		if (pthread_mutex_trylock(philo->r_forks) == 0 && pthread_mutex_trylock(philo->l_forks) == 0)
-		{
-			printf("%d %d has taken a fork\n", tv.tv_usec ,philo->num);
-			// usleep(philo->time_to_eat);
-			// tmp_time_to_die += philo->time_to_die;
-			philo->num_of_times_each_philo_must_eat--;
-			pthread_mutex_unlock(philo->r_forks);
-			pthread_mutex_unlock(philo->l_forks);
-		}
-		philo->time_to_die--;
+		if (check_break(env))
+			break ;
+		take_forks_philo(env->philo);
+		eating_philo(env->philo);
+		sleeping_philo(env->philo);
+		thinking_philo(env->philo);
 	}
+	// free(philo);
+	// philo = NULL;
 	return (NULL);
-}
-
-int	check_dead_or_alive(t_env *env)
-{
-	int i;
-
-	i = 0;
-	while (i < env->num_of_philo)
-	{
-		if (env->philo[i]->time_to_die)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	check_had_eaten(t_env *env)
-{
-	int i;
-
-	i = 0;
-	while (i < env->num_of_philo)
-	{
-		if (env->philo[i]->num_of_times_each_philo_must_eat)
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 void	*watchman_routine(t_env *env)
 {
-	int i;
+	struct timeval	now;
+	t_philo					*philo;
 
-	i = 0;
-	while (check_dead_or_alive(env) && check_had_eaten(env))
+	philo = env->philo;
+	while (env->philo->alive != 0)
 	{
-		i = 0;
-		while (i < env->num_of_philo)
+		pthread_mutex_lock(&philo->philo_mutex);
+		gettimeofday(&now, NULL);
+		if (now.tv_usec - philo->borntime > philo->time.die)
 		{
-			if (env->philo[i]->time_to_die == 0)
-				printf("philo%d is dead\n", env->philo[i]->num);
-			i++;
+			printf("%ld %d died\n", now.tv_usec, philo->num);
+			philo->alive = 0;
 		}
+		pthread_mutex_unlock(&philo->philo_mutex);
 	}
 	return (NULL);
 }

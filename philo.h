@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:12 by mahayase          #+#    #+#             */
-/*   Updated: 2023/05/26 18:32:06 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/05/27 22:51:23 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +19,68 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
+# include <stdbool.h>
 # include <pthread.h>
+
+typedef struct s_time
+{
+	int							die;
+	int							eat;
+	int							sleep;
+	int							num_of_eat;
+}	t_time;
 
 typedef struct s_philo
 {
-	int 			num;
-	pthread_t		thread_id;
+	pthread_t				thread_id;
 	pthread_mutex_t	*r_forks;
 	pthread_mutex_t	*l_forks;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				num_of_times_each_philo_must_eat;
+	pthread_mutex_t philo_mutex;
+	int							num;
+	long						borntime;
+	int							alive;
+	t_time					time;
 }	t_philo;
+
+typedef struct s_info
+{
+	t_philo					*philo;
+	pthread_mutex_t	*forks;
+	int							num_of_philo;
+	pthread_mutex_t	dead_mutex;
+	bool						someone_died;
+	pthread_mutex_t	meal_mutex;
+	bool						everyone_ate_meal;
+	int							die;
+	int							eat;
+	int							sleep;
+	int							num_of_eat;
+}	t_info;
 
 typedef struct s_env
 {
-	t_philo			**philo;
-	pthread_mutex_t	*forks;
-	int				num_of_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				num_of_times_each_philo_must_eat;
+	t_philo	*philo;
+	t_info	*info;
 }	t_env;
 
-t_env			*init_env(char **av);
+int							ft_atoi(const char *str);
+void						free_philo(t_env *env, t_info *info, t_philo *philo);
+void						destroy_forks(t_info *info);
+t_info					*init_info(char **av);
 pthread_mutex_t	*init_forks(int num_of_philo);
-t_philo			*create_philo(t_env *env, int num);
-void			create_watchman(t_env *env);
-void			*philo_routine(t_philo *philo);
-void			*watchman_routine(t_env *env);
+void						init_philo(t_philo *philo, t_info *info, int num);
+void						init_philos(t_philo *philos, t_info *info);
+t_philo					*create_philos(t_info *info);
+void						create_watchman(t_philo *philo);
+void						superwatchman(t_env *env, t_info *info);
+void						start_threads(t_env *env, t_philo *philo, t_info *info);
+void						*philo_routine(t_env *env);
+void						*watchman_routine(t_env *env);
+void						*superwatchman_routine(t_env *env);
+void						reset_borntime(t_philo *philo);
+void						take_forks_philo(t_philo *philo);
+void						eating_philo(t_philo *philo);
+void						sleeping_philo(t_philo *philo);
+void						thinking_philo(t_philo *philo);
 
 #endif

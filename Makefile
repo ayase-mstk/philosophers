@@ -3,8 +3,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -pthread
 RM = rm -f
 SRC =	main.c \
-		init.c \
-		routine.c
+			init.c \
+			routine.c \
+			action.c \
+			super_watchman.c \
+			utils.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
