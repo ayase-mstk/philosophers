@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:55:50 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/05/27 22:42:58 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/05/28 20:22:09 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_info	*init_info(char **av)
 	info->num_of_eat = ft_atoi(av[5]);
 	pthread_mutex_init(&info->dead_mutex, NULL);
 	pthread_mutex_init(&info->meal_mutex, NULL);
+	pthread_mutex_init(&info->print_mutex, NULL);
 	info->someone_died = true;
 	info->everyone_ate_meal = true;
 	info->philo = NULL;
@@ -56,24 +57,24 @@ pthread_mutex_t	*init_forks(int num_of_philo)
 
 void	init_philo(t_philo *philo, t_info *info, int num)
 {
-	pthread_mutex_init(&philo->philo_mutex, NULL);
+	// pthread_mutex_init(&philo->philo_mutex, NULL);
 	philo->num = num + 1;
-	philo->borntime = 0;
+	philo->last_meal_time = 0;
 	philo->alive = 1;
 	philo->r_forks = &info->forks[philo->num];
 	philo->l_forks = &info->forks[(philo->num + 1) % info->num_of_philo];
 	init_time(info, &philo->time);
 }
 
-void	create_watchman(t_philo *philo)
-{
-	pthread_t thread_id;
-	int				ret;
+// void	create_watchman(t_philo *philo)
+// {
+// 	pthread_t thread_id;
+// 	int				ret;
 
-	ret = pthread_create(&thread_id, NULL, (void *)watchman_routine, philo);
-	if (ret != 0)
-		strerror(errno);
-	ret = pthread_join(thread_id, NULL);
-	if (ret != 0)
-		exit(1);
-}
+// 	ret = pthread_create(&thread_id, NULL, (void *)watchman_routine, philo);
+// 	if (ret != 0)
+// 		strerror(errno);
+// 	ret = pthread_join(thread_id, NULL);
+// 	if (ret != 0)
+// 		exit(1);
+// }

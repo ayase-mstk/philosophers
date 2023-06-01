@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:09 by mahayase          #+#    #+#             */
-/*   Updated: 2023/05/27 23:31:08 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/05/28 20:23:48 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	start_threads(t_env *env, t_philo *philo, t_info *info)
 		if (ret != 0)
 			exit(1);
 		i++;
-		usleep(100);
+		usleep(1000);
 	}
 	// i = 0;
 	// while (i < info->num_of_philo)
@@ -65,7 +65,7 @@ int	main(int ac, char **av)
 	env = (t_env *)malloc(sizeof(t_env) * info->num_of_philo);
 	start_threads(env, philo, info);
 	superwatchman(env, info);
-	free_philo(env, info, philo);
+	free(philo);
 	destroy_forks(info);
 	free(info->forks);
 	free(info);

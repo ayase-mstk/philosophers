@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:56:12 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/05/27 21:48:51 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/05/28 20:23:24 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <limits.h>
 
-void	free_philo(t_env *env, t_info *info, t_philo *philo)
-{
-	int	i;
+// void	free_philo(t_env *env, t_info *info, t_philo *philo)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < info->num_of_philo)
-	{
-		pthread_mutex_destroy(&env[i].philo->philo_mutex);
-		i++;
-	}
-	free(philo);
-}
+// 	i = 0;
+// 	while (i < info->num_of_philo)
+// 	{
+// 		pthread_mutex_destroy(&env[i].philo->philo_mutex);
+// 		i++;
+// 	}
+// 	free(philo);
+// }
 
 void	destroy_forks(t_info *info)
 {
