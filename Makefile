@@ -1,25 +1,31 @@
-NAME = philo
+NAME = philo/philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -pthread
-RM = rm -f
-SRC =	main.c \
-			init.c \
-			routine.c \
-			action.c \
-			super_watchman.c \
-			utils.c
-OBJ = $(SRC:.c=.o)
+RM = rm -rf
+SRCS_DIR = philo/srcs/
+SRCS =	main.c \
+		init.c \
+		routine.c \
+		action.c \
+		super_watchman.c \
+		utils.c
 
-all: $(NAME)
+OBJ_DIR = philo/obj/
+OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+all: $(OBJ_DIR) $(NAME)
 
-.c.o:
+$(OBJ_DIR):
+	mkdir -p $@
+
+$(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
