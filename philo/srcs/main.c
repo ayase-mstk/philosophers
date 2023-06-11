@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:09 by mahayase          #+#    #+#             */
-/*   Updated: 2023/05/28 20:23:48 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/11 20:00:43 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	start_threads(t_env *env, t_philo *philo, t_info *info)
 	int	ret;
 
 	i = 0;
+	info->start_time = get_time();
 	while (i < info->num_of_philo)
 	{
 		env[i].info = info;
@@ -38,7 +39,7 @@ void	start_threads(t_env *env, t_philo *philo, t_info *info)
 		if (ret != 0)
 			exit(1);
 		i++;
-		usleep(1000);
+		// usleep(1000);
 	}
 	// i = 0;
 	// while (i < info->num_of_philo)
@@ -50,21 +51,34 @@ void	start_threads(t_env *env, t_philo *philo, t_info *info)
 	// }
 }
 
+void	join_threads(t_env *env, t_info *info)
+{
+	int		i;
+
+	i = 0;
+	while (i < info->num_of_philo)
+	{
+		pthread_join(env[i].philo->thread_id, NULL);
+		i++;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_env		*env;
 	t_philo	*philo;
 	t_info	*info;
 
-	if (ac != 6)
+	if (ac != 5 && ac != 6)
 		return (0);
-	info = init_info(av);
+	info = init_info(ac, av); 
 	info->forks = init_forks(info->num_of_philo);
 	philo = (t_philo *)malloc(sizeof(t_philo) * info->num_of_philo);
 	init_philos(philo, info);
 	env = (t_env *)malloc(sizeof(t_env) * info->num_of_philo);
 	start_threads(env, philo, info);
 	superwatchman(env, info);
+	// join_threads(env, info);
 	free(philo);
 	destroy_forks(info);
 	free(info->forks);

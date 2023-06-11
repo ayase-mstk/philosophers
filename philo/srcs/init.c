@@ -6,36 +6,38 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:55:50 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/05/28 20:22:09 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/11 18:52:52 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_time(t_info *info, t_time *time)
-{
-	time->die = info->die;
-	time->eat = info->eat;
-	time->sleep = info->sleep;
-	time->num_of_eat = info->num_of_eat;
-}
+// void	init_time(t_info *info, t_time *time)
+// {
+// 	time->die = info->die;
+// 	time->eat = info->eat;
+// 	time->sleep = info->sleep;
+// 	time->num_of_eat = info->num_of_eat;
+// }
 
-t_info	*init_info(char **av)
+t_info	*init_info(int ac, char **av)
 {
 	t_info	*info;
 
 	info = malloc(sizeof(t_info));
-	info->num_of_philo = atoi(av[1]);
+	info->num_of_philo = ft_atoi(av[1]);
 	info->die = ft_atoi(av[2]);
 	info->eat = ft_atoi(av[3]);
 	info->sleep = ft_atoi(av[4]);
-	info->num_of_eat = ft_atoi(av[5]);
+	if (ac == 6)
+		info->num_of_eat = ft_atoi(av[5]);
+	else
+		info->num_of_eat = 0;
 	pthread_mutex_init(&info->dead_mutex, NULL);
 	pthread_mutex_init(&info->meal_mutex, NULL);
 	pthread_mutex_init(&info->print_mutex, NULL);
 	info->someone_died = true;
 	info->everyone_ate_meal = true;
-	info->philo = NULL;
 	info->forks = NULL;
 	return (info);
 }
@@ -60,10 +62,10 @@ void	init_philo(t_philo *philo, t_info *info, int num)
 	// pthread_mutex_init(&philo->philo_mutex, NULL);
 	philo->num = num + 1;
 	philo->last_meal_time = 0;
-	philo->alive = 1;
-	philo->r_forks = &info->forks[philo->num];
-	philo->l_forks = &info->forks[(philo->num + 1) % info->num_of_philo];
-	init_time(info, &philo->time);
+	philo->eat_count = 0;
+	philo->r_forks = philo->num;
+	philo->l_forks = (philo->num + 1) % info->num_of_philo;
+	// init_time(info, &philo->time);
 }
 
 // void	create_watchman(t_philo *philo)
