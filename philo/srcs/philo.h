@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:12 by mahayase          #+#    #+#             */
-/*   Updated: 2023/06/11 20:17:39 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/14 17:58:35 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_philo
 	int				num;
 	long			last_meal_time;
 	int				eat_count;
-	// t_time 			*time;
+	bool			alive;
 }	t_philo;
 
 typedef struct s_info

@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:56:05 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/06/11 20:19:25 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/14 21:46:06 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,10 @@
 unsigned long	get_time(void)
 {
 	struct timeval  tv;
-	struct timezone tz;
-	unsigned long   sec;
-	unsigned long   usec;
 	unsigned long   msec;
 
-	tz.tz_minuteswest = 900;        /* 日本時間は15時間西(9時間東)*/
-	tz.tz_dsttime = DST_NONE;       /* 夏時間は採用せず */
-	gettimeofday( &tv, &tz );
-	sec = tv.tv_sec;
-	usec = tv.tv_usec;
-	msec = sec * 1000 + usec / 1000;
+	gettimeofday( &tv, NULL );
+	msec = tv.tv_sec * (unsigned long)1000 + tv.tv_usec / 1000;
 	return (msec);
 }
 
@@ -54,11 +47,18 @@ int	check_break(t_env *env)
 
 void	*philo_routine(t_env *env)
 {
+	unsigned int	tmp_fork;
+
 	reset_deathtime(env);
+	if (env->philo->num % 2 == 0)
+	{
+		tmp_fork = env->philo->l_forks;
+		env->philo->l_forks = env->philo->r_forks;
+		env->philo->r_forks = tmp_fork;
+		usleep(1000);
+	}
 	while (1)
 	{
-		if (env->philo->num % 2 == 0)
-			usleep(1000);
 		if (check_break(env))
 			break ;
 		take_forks_philo(env);

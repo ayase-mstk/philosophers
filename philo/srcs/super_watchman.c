@@ -16,18 +16,14 @@ int	check_dead_or_alive(t_env *env, t_info *info)
 {
 	int 						i;
 	int							res;
-	struct timeval	now;
 
 	i = 0;
 	res = 1;
 	while (i < info->num_of_philo && res)
 	{
 		pthread_mutex_lock(&info->dead_mutex);
-		gettimeofday(&now, NULL);
-		// print_string(env, now.tv_usec, i, "now time");
-		// print_string(env, env[i].philo->last_meal_time, i, "last meal time");
-		if ((now.tv_usec - env[i].philo->last_meal_time) \
-						> info->die * 1000)
+		if ((int)(get_time() - env[i].philo->last_meal_time) \
+						> info->die)
 			res = 0;
 		pthread_mutex_unlock(&info->dead_mutex);
 		i++;
@@ -75,6 +71,6 @@ void	superwatchman(t_env *env, t_info *info)
 			print_string(env, get_time(), 0, "everyone ate meal");
 			break ;
 		}	
-		// usleep(100);
+		usleep(50000);
 	}
 }

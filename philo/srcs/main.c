@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:09 by mahayase          #+#    #+#             */
-/*   Updated: 2023/06/11 20:00:43 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/14 21:04:06 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	start_threads(t_env *env, t_philo *philo, t_info *info)
 	int	ret;
 
 	i = 0;
+	printf("stop time ; %d\n", info->eat * 900);
 	info->start_time = get_time();
 	while (i < info->num_of_philo)
 	{
