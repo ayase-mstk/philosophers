@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:09 by mahayase          #+#    #+#             */
-/*   Updated: 2023/06/14 21:04:06 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/15 10:30:24 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void ft_pstr(char *str)
+{
+    write(1, str, ft_strlen(str));
+}
+
+static void    print_header(void)
+{
+    ft_pstr("  ________  ___  ___  ___  ___       ________      \n");
+    ft_pstr(" |\\   __  \\|\\  \\|\\  \\|\\  \\|\\  \\     |\\   __  \\     \n");
+    ft_pstr(" \\ \\  \\|\\  \\ \\  \\\\\\  \\ \\  \\ \\  \\    \\ \\  \\|\\  \\    \n");
+    ft_pstr("  \\ \\   ____\\ \\   __  \\ \\  \\ \\  \\    \\ \\  \\\\\\  \\   \n");
+    ft_pstr("   \\ \\  \\___|\\ \\  \\ \\  \\ \\  \\ \\  \\____\\ \\  \\\\\\  \\  \n");
+    ft_pstr("    \\ \\__\\    \\ \\__\\ \\__\\ \\__\\ \\_______\\ \\_______\\ \n");
+    ft_pstr("     \\|__|     \\|__|\\|__|\\|__|\\|_______|\\|_______| \n");
+}
 
 void	init_philos(t_philo *philos, t_info *info)
 {
@@ -30,7 +46,6 @@ void	start_threads(t_env *env, t_philo *philo, t_info *info)
 	int	ret;
 
 	i = 0;
-	printf("stop time ; %d\n", info->eat * 900);
 	info->start_time = get_time();
 	while (i < info->num_of_philo)
 	{
@@ -39,27 +54,6 @@ void	start_threads(t_env *env, t_philo *philo, t_info *info)
 		ret = pthread_create(&philo[i].thread_id, NULL, (void *)philo_routine, &env[i]);
 		if (ret != 0)
 			exit(1);
-		i++;
-		// usleep(1000);
-	}
-	// i = 0;
-	// while (i < info->num_of_philo)
-	// {
-	// 	ret = pthread_detach(env[i].philo->thread_id);
-	// 	if (ret != 0)
-	// 		exit(1);
-	// 	i++;
-	// }
-}
-
-void	join_threads(t_env *env, t_info *info)
-{
-	int		i;
-
-	i = 0;
-	while (i < info->num_of_philo)
-	{
-		pthread_join(env[i].philo->thread_id, NULL);
 		i++;
 	}
 }
@@ -70,6 +64,7 @@ int	main(int ac, char **av)
 	t_philo	*philo;
 	t_info	*info;
 
+	print_header();
 	if (ac != 5 && ac != 6)
 		return (0);
 	info = init_info(ac, av); 
@@ -79,7 +74,6 @@ int	main(int ac, char **av)
 	env = (t_env *)malloc(sizeof(t_env) * info->num_of_philo);
 	start_threads(env, philo, info);
 	superwatchman(env, info);
-	// join_threads(env, info);
 	free(philo);
 	destroy_forks(info);
 	free(info->forks);

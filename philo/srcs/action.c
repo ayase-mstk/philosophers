@@ -17,16 +17,6 @@ void	take_forks_philo(t_env *env)
 void	eating_philo(t_env *env)
 {
 	print_string(env, get_time(), env->philo->num, "is eating");
-	// pthread_mutex_lock(&env->info->dead_mutex);
-	// if ((get_time() - env->philo->last_meal_time) > (unsigned long)(env->info->die * 1000))
-	// {
-	// 	print_string(env, get_time(), env->philo->num, "is died");
-	// 	pthread_mutex_unlock(&env->info->dead_mutex);
-	// 	pthread_mutex_unlock(&env->info->forks[env->philo->r_forks]);
-	// 	pthread_mutex_unlock(&env->info->forks[env->philo->l_forks]);
-	// 	return ;
-	// }
-	// pthread_mutex_unlock(&env->info->dead_mutex);
 	reset_deathtime(env);
 	pthread_mutex_lock(&env->info->meal_mutex);
 	env->philo->eat_count++;
@@ -40,7 +30,6 @@ void	sleeping_philo(t_env *env)
 {
 	print_string(env, get_time(), env->philo->num, "is sleeping");
 	usleep(env->info->sleep * 1000);
-	print_string(env, get_time(), env->philo->num, "is slept");
 }
 
 void	thinking_philo(t_env *env)
