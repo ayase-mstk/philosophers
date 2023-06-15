@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:55:50 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/06/14 21:53:00 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:55:38 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_info	*init_info(int ac, char **av)
 
 pthread_mutex_t	*init_forks(int num_of_philo)
 {
-	int	i;
+	int				i;
 	pthread_mutex_t	*forks;
 
 	i = 0;
@@ -57,4 +57,16 @@ void	init_philo(t_philo *philo, t_info *info, int num)
 	philo->r_forks = philo->num - 1;
 	philo->l_forks = (philo->num) % (info->num_of_philo);
 	philo->alive = true;
+}
+
+void	init_philos(t_philo *philos, t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->num_of_philo)
+	{
+		init_philo(&philos[i], info, i);
+		i++;
+	}
 }

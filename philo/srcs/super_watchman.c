@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   super_watchman.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/15 17:24:03 by mahayase          #+#    #+#             */
+/*   Updated: 2023/06/15 18:00:00 by mahayase         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	kill_thread(t_env *env, t_info *info)
@@ -14,7 +26,7 @@ void	kill_thread(t_env *env, t_info *info)
 
 int	check_dead_or_alive(t_env *env, t_info *info)
 {
-	int 						i;
+	int	i;
 
 	i = 0;
 	while (i < info->num_of_philo)
@@ -24,7 +36,8 @@ int	check_dead_or_alive(t_env *env, t_info *info)
 						> info->die)
 		{
 			pthread_mutex_unlock(&info->dead_mutex);
-			return (i);
+			print_string(env, get_time(), i, "died");
+			return (1);
 		}
 		pthread_mutex_unlock(&info->dead_mutex);
 		i++;
@@ -34,7 +47,7 @@ int	check_dead_or_alive(t_env *env, t_info *info)
 
 int	check_had_eaten(t_env *env, t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->num_of_philo)
@@ -53,13 +66,10 @@ int	check_had_eaten(t_env *env, t_info *info)
 
 void	superwatchman(t_env *env, t_info *info)
 {
-	int		ret;
-
 	while (1)
 	{
-		if ((ret = check_dead_or_alive(env, info)) != 0)
+		if (check_dead_or_alive(env, info))
 		{
-			print_string(env, get_time(), ret, "died");
 			pthread_mutex_lock(&info->dead_mutex);
 			info->someone_died = false;
 			pthread_mutex_unlock(&info->dead_mutex);
@@ -77,6 +87,5 @@ void	superwatchman(t_env *env, t_info *info)
 			printf("happy end\n");
 			break ;
 		}
-		// usleep(50000);
 	}
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   action.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/15 17:23:50 by mahayase          #+#    #+#             */
+/*   Updated: 2023/06/15 17:54:44 by mahayase         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	reset_deathtime(t_env *env)
@@ -21,7 +33,7 @@ void	eating_philo(t_env *env)
 	pthread_mutex_lock(&env->info->meal_mutex);
 	env->philo->eat_count++;
 	pthread_mutex_unlock(&env->info->meal_mutex);
-	usleep(env->info->eat * 1000);
+	wait_eat(env);
 	pthread_mutex_unlock(&env->info->forks[env->philo->r_forks]);
 	pthread_mutex_unlock(&env->info->forks[env->philo->l_forks]);
 }
@@ -29,7 +41,7 @@ void	eating_philo(t_env *env)
 void	sleeping_philo(t_env *env)
 {
 	print_string(env, get_time(), env->philo->num, "is sleeping");
-	usleep(env->info->sleep * 1000);
+	wait_sleep(env);
 }
 
 void	thinking_philo(t_env *env)

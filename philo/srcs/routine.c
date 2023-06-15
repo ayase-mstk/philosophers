@@ -6,27 +6,42 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:56:05 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/06/14 21:46:06 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:52:28 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-unsigned long	get_time(void)
+void	wait_eat(t_env *env)
 {
-	struct timeval  tv;
-	unsigned long   msec;
-
-	gettimeofday( &tv, NULL );
-	msec = tv.tv_sec * (unsigned long)1000 + tv.tv_usec / 1000;
-	return (msec);
+	while (1)
+	{
+		pthread_mutex_unlock(&env->info->dead_mutex);
+		if (get_time() - env->philo->last_meal_time \
+					>= (unsigned long)env->info->eat)
+		{
+			pthread_mutex_unlock(&env->info->dead_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&env->info->dead_mutex);
+		usleep(10);
+	}
 }
 
-void	print_string(t_env *env, unsigned long time, int num, char *str)
+void	wait_sleep(t_env *env)
 {
-	pthread_mutex_lock(&env->info->print_mutex);
-	printf("%*ld %d %s\n", 6, (time - env->info->start_time), num, str);
-	pthread_mutex_unlock(&env->info->print_mutex);
+	while (1)
+	{
+		pthread_mutex_lock(&env->info->dead_mutex);
+		if (get_time() - env->philo->last_meal_time \
+					>= (unsigned long)env->info->sleep)
+		{
+			pthread_mutex_unlock(&env->info->dead_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&env->info->dead_mutex);
+		usleep(10);
+	}
 }
 
 int	check_break(t_env *env)
