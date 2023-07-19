@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:12 by mahayase          #+#    #+#             */
-/*   Updated: 2023/06/15 17:57:49 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/19 19:12:08 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_philo
 	unsigned int	r_forks;
 	unsigned int	l_forks;
 	int				num;
-	long			last_meal_time;
+	unsigned long	last_meal_time;
 	int				eat_count;
 	bool			alive;
 }	t_philo;
@@ -70,10 +70,11 @@ void			start_threads(t_env *env, t_philo *philo, t_info *info);
 void			*philo_routine(t_env *env);
 void			wait_eat(t_env *env);
 void			wait_sleep(t_env *env);
+int				check_break(t_env *env);
 void			reset_deathtime(t_env *env);
-void			take_forks_philo(t_env *env);
-void			eating_philo(t_env *env);
-void			sleeping_philo(t_env *env);
-void			thinking_philo(t_env *env);
+int				take_forks_philo(t_env *env);
+int				eating_philo(t_env *env);
+int				sleeping_philo(t_env *env);
+int				thinking_philo(t_env *env);
 
 #endif

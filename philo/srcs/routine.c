@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:56:05 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/06/15 17:52:28 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/19 19:14:48 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,49 @@
 
 void	wait_eat(t_env *env)
 {
+	unsigned long	start;
+
+	start = get_time();
 	while (1)
 	{
-		pthread_mutex_unlock(&env->info->dead_mutex);
-		if (get_time() - env->philo->last_meal_time \
-					>= (unsigned long)env->info->eat)
-		{
-			pthread_mutex_unlock(&env->info->dead_mutex);
+		if ((int)(get_time() - start) \
+					>= env->info->eat)
 			break ;
-		}
-		pthread_mutex_unlock(&env->info->dead_mutex);
 		usleep(10);
 	}
 }
 
 void	wait_sleep(t_env *env)
 {
+	unsigned long	start;
+
+	start = get_time();
 	while (1)
 	{
-		pthread_mutex_lock(&env->info->dead_mutex);
-		if (get_time() - env->philo->last_meal_time \
-					>= (unsigned long)env->info->sleep)
-		{
-			pthread_mutex_unlock(&env->info->dead_mutex);
+		if ((int)(get_time() - start) \
+					>= env->info->sleep)
 			break ;
-		}
-		pthread_mutex_unlock(&env->info->dead_mutex);
 		usleep(10);
 	}
 }
 
 int	check_break(t_env *env)
 {
-	int	res;
-
-	res = 0;
 	pthread_mutex_lock(&env->info->dead_mutex);
 	if (!env->info->someone_died)
-		res = 1;
+	{
+		pthread_mutex_unlock(&env->info->dead_mutex);
+		return (1);
+	}
 	pthread_mutex_unlock(&env->info->dead_mutex);
 	pthread_mutex_lock(&env->info->meal_mutex);
 	if (!env->info->everyone_ate_meal)
-		res = 1;
+	{
+		pthread_mutex_unlock(&env->info->meal_mutex);
+		return (1);
+	}
 	pthread_mutex_unlock(&env->info->meal_mutex);
-	return (res);
+	return (0);
 }
 
 void	*philo_routine(t_env *env)
@@ -65,21 +64,26 @@ void	*philo_routine(t_env *env)
 	unsigned int	tmp_fork;
 
 	reset_deathtime(env);
-	if (env->philo->num % 2 == 0)
+	if (env->info->num_of_philo % 2 != 0)
 	{
-		tmp_fork = env->philo->l_forks;
-		env->philo->l_forks = env->philo->r_forks;
-		env->philo->r_forks = tmp_fork;
-		usleep(1000);
+		if (env->philo->num % 2 == 0)
+		{
+			tmp_fork = env->philo->l_forks;
+			env->philo->l_forks = env->philo->r_forks;
+			env->philo->r_forks = tmp_fork;
+			usleep(1000);
+		}
 	}
 	while (1)
 	{
-		if (check_break(env))
+		if (take_forks_philo(env))
 			break ;
-		take_forks_philo(env);
-		eating_philo(env);
-		sleeping_philo(env);
-		thinking_philo(env);
+		if (eating_philo(env))
+			break ;
+		if (sleeping_philo(env))
+			break ;
+		if (thinking_philo(env))
+			break ;
 	}
 	return (NULL);
 }
