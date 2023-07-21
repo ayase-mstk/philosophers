@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:55:50 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/19 19:07:37 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:15:34 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_info	*init_info(int ac, char **av)
 	info->someone_died = true;
 	info->everyone_ate_meal = true;
 	info->forks = NULL;
+	info->print_flag = true;
 	return (info);
 }
 

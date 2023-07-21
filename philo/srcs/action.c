@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:23:50 by mahayase          #+#    #+#             */
-/*   Updated: 2023/07/19 19:11:39 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:08:57 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ int	take_forks_philo(t_env *env)
 
 int	eating_philo(t_env *env)
 {
-	if (check_break(env))
-		return (1);
 	print_string(env, get_time(), env->philo->num, "is eating");
 	reset_deathtime(env);
 	pthread_mutex_lock(&env->info->meal_mutex);

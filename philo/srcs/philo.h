@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:12 by mahayase          #+#    #+#             */
-/*   Updated: 2023/07/19 19:12:08 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:15:12 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_info
 	int				num_of_eat;
 	bool			someone_died;
 	bool			everyone_ate_meal;
+	bool			print_flag;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	print_mutex;

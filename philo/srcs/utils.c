@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:56:12 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/06/15 18:09:00 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/21 15:14:12 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 void	print_string(t_env *env, unsigned long time, int num, char *str)
 {
 	pthread_mutex_lock(&env->info->print_mutex);
-	printf("%ld %d %s\n", (time - env->info->start_time), num, str);
+	if (env->info->print_flag)
+		printf("%ld %d %s\n", (time - env->info->start_time), num, str);
 	pthread_mutex_unlock(&env->info->print_mutex);
 }
 
@@ -49,27 +50,29 @@ int	ft_isdigit(int c)
 
 int	ft_atoi(const char *str)
 {
-	int			minus;
-	long int	ans;
+	int		i;
+	int		sign;
+	long	num;
 
-	minus = 1;
-	ans = 0;
-	while (*str == ' ' || (9 <= (int)*str && (int)*str <= 13))
-		str++;
-	if (*str == '-')
-		minus = -1;
-	if (*str == '+' || *str == '-')
-		str++;
-	while (ft_isdigit(*str))
+	i = 0;
+	sign = 1;
+	num = 0;
+	while (str[i] && (str[i] == ' ' || (9 <= str[i] && str[i] <= 13)))
+		i++;
+	if (str[i] && (str[i] == '-' || str[i] == '+'))
+		if (str[i++] == '-')
+			sign *= -1;
+	while (str[i] && ft_isdigit(str[i]))
 	{
-		if (minus == -1 && (ans > LONG_MAX / 10 || \
-						(ans == LONG_MAX / 10 && *str - '0' > LONG_MAX % 10)))
+		if (sign == -1 && (num > LONG_MAX / 10 || \
+						(num == LONG_MAX / 10 && \
+						str[i] - '0' - 1 > LONG_MAX % 10)))
 			return ((int)LONG_MIN);
-		if (minus == 1 && (ans > LONG_MAX / 10 || \
-						(ans == LONG_MAX / 10 && *str - '0' > LONG_MAX % 10)))
+		if (sign == 1 && (num > LONG_MAX / 10 || \
+						(num == LONG_MAX / 10 && \
+						str[i] - '0' > LONG_MAX % 10)))
 			return ((int)LONG_MAX);
-		ans = ans * 10 + (*str - '0');
-		str++;
+		num = num * 10 + (str[i++] - '0');
 	}
-	return ((int)(ans * minus));
+	return ((int)(num * sign));
 }
