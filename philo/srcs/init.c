@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:55:50 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/20 17:15:34 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:08:37 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	init_philo(t_philo *philo, t_info *info, int num)
 	philo->num = num + 1;
 	philo->last_meal_time = 0;
 	philo->eat_count = 0;
-	if (num % 2)
+	if (!num % 2)
 	{
 		philo->r_forks = philo->num - 1;
 		philo->l_forks = (philo->num) % (info->num_of_philo);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:23:50 by mahayase          #+#    #+#             */
-/*   Updated: 2023/07/20 17:08:57 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:11:34 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int	eating_philo(t_env *env)
 {
 	print_string(env, get_time(), env->philo->num, "is eating");
 	reset_deathtime(env);
-	pthread_mutex_lock(&env->info->meal_mutex);
-	env->philo->eat_count++;
-	pthread_mutex_unlock(&env->info->meal_mutex);
 	wait_eat(env);
 	pthread_mutex_unlock(&env->info->forks[env->philo->r_forks]);
 	pthread_mutex_unlock(&env->info->forks[env->philo->l_forks]);
+	pthread_mutex_lock(&env->info->meal_mutex);
+	env->philo->eat_count++;
+	pthread_mutex_unlock(&env->info->meal_mutex);
 	return (0);
 }
 

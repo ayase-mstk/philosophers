@@ -22,7 +22,10 @@ int	eating_philo(t_env *env)
 	sem_wait(env->forks);
 	print_string(env, get_time(), env->id, "has taken a fork");
 	if (check_death(env))
+	{
+		sem_post(env->forks);
 		return (1);
+	}
 	print_string(env, get_time(), env->id, "is eating");
 	env->last_meal = get_time();
 	wait_philo(env->time_to_eat);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:56:05 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/19 19:14:48 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:06:41 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,19 @@ int	check_break(t_env *env)
 
 void	*philo_routine(t_env *env)
 {
-	unsigned int	tmp_fork;
+	// unsigned int	tmp_fork;
 
 	reset_deathtime(env);
-	if (env->info->num_of_philo % 2 != 0)
-	{
-		if (env->philo->num % 2 == 0)
-		{
-			tmp_fork = env->philo->l_forks;
-			env->philo->l_forks = env->philo->r_forks;
-			env->philo->r_forks = tmp_fork;
-			usleep(1000);
-		}
-	}
+	// if (env->info->num_of_philo % 2 != 0)
+	// {
+	// 	if (env->philo->num % 2 == 0)
+	// 	{
+	// 		// tmp_fork = env->philo->l_forks;
+	// 		// env->philo->l_forks = env->philo->r_forks;
+	// 		// env->philo->r_forks = tmp_fork;
+	// 		usleep(1000);
+	// 	}
+	// }
 	while (1)
 	{
 		if (take_forks_philo(env))

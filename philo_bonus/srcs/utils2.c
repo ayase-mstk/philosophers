@@ -1,21 +1,18 @@
 #include "philo_bonus.h"
 
-void	kill_other_philo(t_env *env, pid_t *philo_pid, int status)
+void	kill_other_philo(t_env *env, pid_t *philo_pid, pid_t pid)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < (size_t)env->nb_philo)
 	{
-		if (WIFEXITED(status))
+		if (pid == philo_pid[i])
 		{
-			if (WEXITSTATUS(status) == DEATH)
-			{
-				i++;
-				continue ;
-			}
+			i++;
+			continue ;
 		}
-		kill(philo_pid[i], SIGKILL);
+		kill(philo_pid[i], SIGTERM);
 		i++;
 	}
 }
@@ -33,7 +30,7 @@ void	wait_all_philo(t_env *env, pid_t *philo_pid)
 	if (status < 0)
 		exit_error("waitpid");
 	if (WIFEXITED(status) && WEXITSTATUS(status) == DEATH)
-		kill_other_philo(env, philo_pid, status);
+		kill_other_philo(env, philo_pid, pid);
 	i = 0;
 	while (i < (size_t)env->nb_philo)
 	{
@@ -47,6 +44,8 @@ void	wait_all_philo(t_env *env, pid_t *philo_pid)
 		}
 		i++;
 	}
+	if (everyone_ate == env->nb_philo)
+		printf("everyone ate\n");
 }
 
 void	delete_semafork(t_env *env)

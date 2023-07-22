@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   super_watchman.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:24:03 by mahayase          #+#    #+#             */
-/*   Updated: 2023/07/19 19:19:33 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:00:33 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ int	check_dead_or_alive(t_env *env, t_info *info)
 			info->someone_died = false;
 			pthread_mutex_unlock(&info->dead_mutex);
 			print_string(env, get_time(), i + 1, "died");
+			pthread_mutex_lock(&info->print_mutex);
+			info->print_flag = false;
+			pthread_mutex_unlock(&info->print_mutex);
 			return (1);
 		}
 		pthread_mutex_unlock(&info->dead_mutex);

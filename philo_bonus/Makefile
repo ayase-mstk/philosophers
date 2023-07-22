@@ -1,6 +1,6 @@
 NAME = philo_bonus
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 RM = rm -rf
 
 SRCS_DIR = srcs/
