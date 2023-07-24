@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 17:21:12 by mahayase          #+#    #+#             */
-/*   Updated: 2023/07/20 17:15:12 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/24 14:01:27 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ void			init_philos(t_philo *philos, t_info *info);
 void			superwatchman(t_env *env, t_info *info);
 void			start_threads(t_env *env, t_philo *philo, t_info *info);
 void			*philo_routine(t_env *env);
-void			wait_eat(t_env *env);
-void			wait_sleep(t_env *env);
+void			wait_philo(int time);
 int				check_break(t_env *env);
 void			reset_deathtime(t_env *env);
 int				take_forks_philo(t_env *env);

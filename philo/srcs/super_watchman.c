@@ -6,7 +6,7 @@
 /*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:24:03 by mahayase          #+#    #+#             */
-/*   Updated: 2023/07/22 16:00:33 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:12:23 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ int	check_dead_or_alive(t_env *env, t_info *info)
 	while (i < info->num_of_philo)
 	{
 		pthread_mutex_lock(&info->dead_mutex);
-		if (env[i].philo->last_meal_time && \
-			(int)(get_time() - env[i].philo->last_meal_time) \
+		if ((int)(get_time() - env[i].philo->last_meal_time) \
 				> info->die)
 		{
-			info->someone_died = false;
+			info->someone_died = true;
 			pthread_mutex_unlock(&info->dead_mutex);
 			print_string(env, get_time(), i + 1, "died");
 			pthread_mutex_lock(&info->print_mutex);
@@ -53,21 +52,23 @@ int	check_dead_or_alive(t_env *env, t_info *info)
 int	check_had_eaten(t_env *env, t_info *info)
 {
 	int	i;
+	int	flag;
 
 	i = 0;
+	flag = 1;
 	while (i < info->num_of_philo)
 	{
 		pthread_mutex_lock(&info->meal_mutex);
-		if (env[i].philo->eat_count < info->num_of_eat)
+		if (env[i].philo->eat_count > info->num_of_eat)
 		{
-			info->everyone_ate_meal = false;
+			flag = 0;
 			pthread_mutex_unlock(&info->meal_mutex);
-			return (1);
+			break ;
 		}
 		pthread_mutex_unlock(&info->meal_mutex);
 		i++;
 	}
-	return (0);
+	return (flag);
 }
 
 void	superwatchman(t_env *env, t_info *info)
@@ -76,22 +77,19 @@ void	superwatchman(t_env *env, t_info *info)
 	{
 		if (check_dead_or_alive(env, info))
 		{
-			// pthread_mutex_lock(&info->dead_mutex);
-			// info->someone_died = false;
-			// pthread_mutex_unlock(&info->dead_mutex);
 			kill_thread(env, info);
 			printf("dead end\n");
 			break ;
 		}
 		if (info->num_of_eat && !check_had_eaten(env, info))
 		{
-			// pthread_mutex_lock(&info->meal_mutex);
-			// info->everyone_ate_meal = false;
-			// pthread_mutex_unlock(&info->meal_mutex);
+			pthread_mutex_lock(&info->meal_mutex);
+			info->everyone_ate_meal = true;
+			pthread_mutex_unlock(&info->meal_mutex);
 			kill_thread(env, info);
-			print_string(env, get_time(), 0, "everyone ate meal");
 			printf("happy end\n");
 			break ;
 		}
+		usleep(100);
 	}
 }

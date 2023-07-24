@@ -3,32 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:56:12 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/21 15:14:12 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/07/24 14:19:41 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <limits.h>
 
-void	print_string(t_env *env, unsigned long time, int num, char *str)
+void	reset_deathtime(t_env *env)
 {
-	pthread_mutex_lock(&env->info->print_mutex);
-	if (env->info->print_flag)
-		printf("%ld %d %s\n", (time - env->info->start_time), num, str);
-	pthread_mutex_unlock(&env->info->print_mutex);
-}
-
-unsigned long	get_time(void)
-{
-	struct timeval	tv;
-	unsigned long	msec;
-
-	gettimeofday(&tv, NULL);
-	msec = tv.tv_sec * (unsigned long)1000 + tv.tv_usec / 1000;
-	return (msec);
+	pthread_mutex_lock(&env->info->dead_mutex);
+	env->philo->last_meal_time = get_time();
+	pthread_mutex_unlock(&env->info->dead_mutex);
 }
 
 void	destroy_forks(t_info *info)
