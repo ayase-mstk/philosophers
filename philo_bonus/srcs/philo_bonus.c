@@ -6,7 +6,7 @@
 /*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:57:33 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/24 18:09:28 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:30:30 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_env	*init_env(int ac, char **av)
 		env->max_eat = -1;
 	env->start_time = 0;
 	env->fork_name = "/forks";
-	env->forks = sem_open(env->fork_name, O_CREAT, 0666, env->nb_philo / 2);
+	env->forks = sem_open(env->fork_name, O_CREAT, 0666, env->nb_philo);
 	if (env->forks == SEM_FAILED)
 		exit_error("sem_open");
 	env->write_name = "/write";

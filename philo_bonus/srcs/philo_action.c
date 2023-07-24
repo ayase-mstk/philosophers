@@ -6,7 +6,7 @@
 /*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:57:59 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/24 18:27:09 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:30:59 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	eating_philo(t_env *env)
 		exit(DEATH);
 	usleep(env->id * 100);
 	sem_wait(env->forks);
+	sem_wait(env->forks);
 	print_string(env, get_time(), env->id, "has taken a fork");
 	if (check_death(env))
 	{
@@ -52,6 +53,7 @@ void	eating_philo(t_env *env)
 	print_string(env, get_time(), env->id, "is eating");
 	env->last_meal = get_time();
 	wait_philo(env->time_to_eat);
+	sem_post(env->forks);
 	sem_post(env->forks);
 	if (env->max_eat > 0)
 		env->max_eat--;
