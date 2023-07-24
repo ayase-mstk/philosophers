@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/24 17:58:17 by hagewahi          #+#    #+#             */
+/*   Updated: 2023/07/24 18:02:39 by hagewahi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 void	kill_other_philo(t_env *env, pid_t *philo_pid, pid_t pid)
@@ -5,9 +17,6 @@ void	kill_other_philo(t_env *env, pid_t *philo_pid, pid_t pid)
 	size_t	i;
 
 	i = 0;
-	sem_wait(env->write);
-	env->print_flag = false;
-	sem_post(env->write);
 	while (i < (size_t)env->nb_philo)
 	{
 		if (pid == philo_pid[i])
@@ -26,10 +35,8 @@ void	wait_all_philo(t_env *env, pid_t *philo_pid)
 	pid_t	pid;
 	pid_t	ret;
 	int		status;
-	int		everyone_ate;
 
 	i = 0;
-	everyone_ate = 0;
 	pid = waitpid(-1, &status, 0);
 	if (pid < 0)
 		exit_error("waitpid");
@@ -43,13 +50,9 @@ void	wait_all_philo(t_env *env, pid_t *philo_pid)
 			ret = waitpid(philo_pid[i], &status, 0);
 			if (ret < 0)
 				exit_error("waitpid");
-			else if (WIFEXITED(status) && WEXITSTATUS(status) == MAX_EAT)
-				everyone_ate++;
 		}
 		i++;
 	}
-	if (everyone_ate == env->nb_philo - 1)
-		printf("everyone ate\n");
 }
 
 void	delete_semafork(t_env *env)

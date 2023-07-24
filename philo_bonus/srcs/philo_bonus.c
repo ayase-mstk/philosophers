@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/24 17:57:33 by hagewahi          #+#    #+#             */
+/*   Updated: 2023/07/24 17:58:37 by hagewahi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 t_env	*init_env(int ac, char **av)
@@ -52,8 +64,6 @@ void	create_philo(t_env *env)
 	wait_all_philo(env, philo_pid);
 	free(philo_pid);
 }
-
-
 
 int	main(int ac, char **av)
 {

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/24 17:58:07 by hagewahi          #+#    #+#             */
+/*   Updated: 2023/07/24 18:00:50 by hagewahi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
@@ -34,7 +46,8 @@ typedef struct s_env
 }	t_env;
 
 unsigned long	get_time(void);
-void			print_string(t_env *env, unsigned long time, int num, char *str);
+void			print_string(t_env *env, unsigned long time, \
+							int num, char *str);
 void			exit_error(char *str);
 int				ft_atoi(const char *str);
 t_env			*init_env(int ac, char **av);
@@ -43,11 +56,10 @@ void			wait_all_philo(t_env *env, pid_t *philo_pid);
 void			delete_semafork(t_env *env);
 void			free_all(t_env *env);
 void			*philo_life(t_env *env);
-int 			check_death(t_env *env);
+int				check_death(t_env *env);
 int				eating_philo(t_env *env);
 int				sleeping_philo(t_env *env);
 int				thinking_philo(t_env *env);
 int				main(int ac, char **av);
-
 
 #endif
