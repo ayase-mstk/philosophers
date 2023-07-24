@@ -20,12 +20,12 @@ t_env	*init_env(int ac, char **av)
 	env->fork_name = "/forks";
 	env->forks = sem_open(env->fork_name, O_CREAT, 0666, env->nb_philo / 2);
 	if (env->forks == SEM_FAILED)
-		return (NULL);
+		exit_error("sem_open");
 	env->write_name = "/write";
 	env->write = sem_open(env->write_name, O_CREAT, 0666, 1);
 	if (env->write == SEM_FAILED)
-		return (NULL);
-	env->print_flag = 0;
+		exit_error("sem_open");
+	env->print_flag = true;
 	return (env);
 }
 

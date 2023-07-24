@@ -12,7 +12,8 @@ unsigned long	get_time(void)
 void	print_string(t_env *env, unsigned long time, int num, char *str)
 {
 	sem_wait(env->write);
-	printf("%lu %d %s\n", time - env->start_time, num, str);
+	if (env->print_flag)
+		printf("%lu %d %s\n", time - env->start_time, num, str);
 	sem_post(env->write);
 }
 

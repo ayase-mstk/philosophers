@@ -11,6 +11,7 @@
 # include <semaphore.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <stdbool.h>
 
 # define DEATH 1
 # define MAX_EAT 2
@@ -29,7 +30,7 @@ typedef struct s_env
 	int				max_eat;
 	unsigned long	last_meal;
 	unsigned long	start_time;
-	int				print_flag;
+	bool			print_flag;
 }	t_env;
 
 unsigned long	get_time(void);
