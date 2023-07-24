@@ -6,7 +6,7 @@
 /*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:58:07 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/24 18:00:50 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:25:02 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_env
 	int				max_eat;
 	unsigned long	last_meal;
 	unsigned long	start_time;
-	bool			print_flag;
 }	t_env;
 
 unsigned long	get_time(void);
@@ -56,10 +55,9 @@ void			wait_all_philo(t_env *env, pid_t *philo_pid);
 void			delete_semafork(t_env *env);
 void			free_all(t_env *env);
 void			*philo_life(t_env *env);
-int				check_death(t_env *env);
-int				eating_philo(t_env *env);
-int				sleeping_philo(t_env *env);
-int				thinking_philo(t_env *env);
+void			eating_philo(t_env *env);
+void			sleeping_philo(t_env *env);
+void			thinking_philo(t_env *env);
 int				main(int ac, char **av);
 
 #endif

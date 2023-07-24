@@ -6,7 +6,7 @@
 /*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:58:14 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/24 17:59:51 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:09:55 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ unsigned long	get_time(void)
 void	print_string(t_env *env, unsigned long time, int num, char *str)
 {
 	sem_wait(env->write);
-	if (env->print_flag)
-		printf("%lu %d %s\n", time - env->start_time, num, str);
+	printf("%lu %d %s\n", time - env->start_time, num, str);
 	sem_post(env->write);
 }
 

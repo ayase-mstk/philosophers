@@ -6,7 +6,7 @@
 /*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:57:33 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/24 17:58:37 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:09:28 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_env	*init_env(int ac, char **av)
 	env->write = sem_open(env->write_name, O_CREAT, 0666, 1);
 	if (env->write == SEM_FAILED)
 		exit_error("sem_open");
-	env->print_flag = true;
 	return (env);
 }
 

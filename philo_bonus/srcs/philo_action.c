@@ -6,7 +6,7 @@
 /*   By: hagewahi <hagewahi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:57:59 by hagewahi          #+#    #+#             */
-/*   Updated: 2023/07/24 17:58:00 by hagewahi         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:27:09 by hagewahi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,28 @@ static void	wait_philo(int time)
 	}
 }
 
-int	eating_philo(t_env *env)
+static int	check_death(t_env *env)
+{
+	if ((int)(get_time() - env->last_meal) \
+		> env->time_to_die)
+	{
+		print_string(env, get_time(), env->id, "died");
+		return (1);
+	}
+	return (0);
+}
+
+void	eating_philo(t_env *env)
 {
 	if (check_death(env))
-		return (1);
+		exit(DEATH);
 	usleep(env->id * 100);
 	sem_wait(env->forks);
 	print_string(env, get_time(), env->id, "has taken a fork");
 	if (check_death(env))
 	{
 		sem_post(env->forks);
-		return (1);
+		exit(DEATH);
 	}
 	print_string(env, get_time(), env->id, "is eating");
 	env->last_meal = get_time();
@@ -46,22 +57,19 @@ int	eating_philo(t_env *env)
 		env->max_eat--;
 	else if (env->max_eat == 0)
 		exit(MAX_EAT);
-	return (0);
 }
 
-int	sleeping_philo(t_env *env)
+void	sleeping_philo(t_env *env)
 {
 	if (check_death(env))
-		return (1);
+		exit(DEATH);
 	print_string(env, get_time(), env->id, "is sleeping");
 	wait_philo(env->time_to_sleep);
-	return (0);
 }
 
-int	thinking_philo(t_env *env)
+void	thinking_philo(t_env *env)
 {
 	if (check_death(env))
-		return (1);
+		exit(DEATH);
 	print_string(env, get_time(), env->id, "is thinking");
-	return (0);
 }
